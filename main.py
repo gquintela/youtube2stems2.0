@@ -1,16 +1,10 @@
-from downloader import Downloader
+from youtube_audio_downloader import Youtube_audio_downloader
 from split import Spleeter
 
 
-aDownloader = Downloader("inputFile.txt")
+aDownloader = Youtube_audio_downloader("inputFile.txt")
+aDownloader.run()
+
 aSplitter = Spleeter()
-
-try:
-    aDownloader.download_list_to_mp4()
-except:
-    print("Error while downloading the songs.")
-
-try:
-    aSplitter.split()
-except:
-    print("Error while splitting the songs.")
+print(aSplitter.mp4_list)
+aSplitter.run()

@@ -1,7 +1,8 @@
 from pytube import YouTube
+from concurrent_manager import *
 
 
-class Downloader:
+class Youtube_audio_downloader:
     def __init__(self, input_file):
         self.input_file_name = input_file
         self.url_list = []
@@ -15,10 +16,15 @@ class Downloader:
             self.url_list.append(link)
         input_file.close()
 
-    def download_list_to_mp4(self):
+    def run(self):
         self.parse_list()
-        for link in self.url_list:
-            yt = YouTube(link)
-            print(f"Downloading: {yt.title}...")
-            stream = yt.streams.filter(only_audio=True, audio_codec="mp4a.40.2")
-            stream.last().download()
+        a_concurrent_manager = Concurrent_mananger()
+        a_concurrent_manager.concurrent_run(
+            self.url_list, self.download_youtube_video_to_mp4
+        )
+
+    def download_youtube_video_to_mp4(self, link):
+        yt = YouTube(link)
+        print(f"Downloading: {yt.title}...")
+        stream = yt.streams.filter(only_audio=True, audio_codec="mp4a.40.2")
+        stream.last().download()
